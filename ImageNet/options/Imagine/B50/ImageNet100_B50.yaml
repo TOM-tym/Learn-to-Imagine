@@ -1,0 +1,125 @@
+dataset: imagenet100
+
+model: Imagine
+convnet: resnet18
+convnet_config:
+  nf: 64
+
+batch_size: 64 # batch_size per gpu
+
+eval_type: nme
+
+classifier_config:
+  scaling: 3.0
+  type: cosine
+  proxy_per_class: 10
+  distance: neg_stable_cosine_distance
+
+distill_feat:
+  scheduled_factor: 5.0
+  only_old: True
+  dist_unlabeled: True
+
+#pod_spatial:
+#  scheduled_factor: 5.0
+#  collapse_channels: spatial
+#  only_old: True
+#consistency_config:
+#  weight: 5
+generator_config:
+    use_same_classes: False
+    latent_dim: 128
+    output_dim: 256
+    input_dim: 256
+    epoch: 40
+    pretrain_config:
+        epoch: 40
+        scheduling:
+            type: step
+            epochs: [ 20,30,35 ]
+    cos_margin: 0.8
+    lr: 0.05
+    scheduling:
+        type: step
+        epochs: [ 20,30,35 ]
+    lr_decay: 0.1
+    train_config:
+        loss_type: IE
+        threshold: 5
+        labeled_batch_size: 80
+        train_generator_memory_n_samples: 4
+        train_generator_unlabel_n_samples: 5
+        train_generator_new_n_samples: 20
+        train_generator_label_batchsize: 80
+        # generator loss
+        use_unlabeled_feature_map: True
+        use_ce: True
+        use_style: True
+        style_mean: False
+        style_weight: 2
+        use_contrastive: True
+        use_channels: True
+        cycle_weight_global: 0.3
+
+use_unlabeled_ce: True
+unlabeled_soft_ce: True
+lr_layers:
+    layers_lr:
+        convnet.conv1: 0.001
+        convnet.bn1: 0.001
+        convnet.stage_1: 0.001
+        convnet.stage_2: 0.001
+        convnet.stage_3: 0.001
+#nca:
+#  margin: 0.6
+#  scale: 1.
+#  exclude_pos_denominator: true
+softmax_ce: True
+#softmax_ce_only_new: True
+pseudo_memory_n_samples: 2
+pseudo_memory_valid_map_idx: 0.25
+pseudo_re_mined: True
+
+groupwise_factors:
+  old_weights: 0.
+
+#finetuning_config:
+#    sampling: undersampling
+#    tuning: classifier
+#    lr: 0.05
+#    epochs: 20
+#    scaling: null
+
+# Cosine Scheduling (CS)
+scheduling: cosine
+
+# Misc
+epochs: 90
+lr: 0.05
+lr_decay: 0.1
+optimizer: sgd
+proxy_per_class: 1
+weight_decay: 0.0005
+
+weight_generation:
+  type: imprinted
+  multi_class_diff: kmeans
+
+dataset_transforms:
+  color_jitter: true
+
+use_unlabeled: True
+
+pretrain:
+    epochs: 200
+    lr: 0.1
+    scheduling:
+        - 60
+        - 120
+        - 160
+    lr_decay: 0.1
+    weight_decay: 0.0005
+    batch_size: 128
+    optimizer: sgd
+
+extra_dataset_name: imagenet900 #imagenet_32; imagenet900

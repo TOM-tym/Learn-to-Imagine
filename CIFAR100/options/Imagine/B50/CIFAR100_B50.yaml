@@ -1,0 +1,105 @@
+dataset: cifar100
+
+model: Imagine
+convnet: rebuffi
+
+eval_type: nme
+
+classifier_config:
+    type: cosine
+    scaling: 3.0
+    proxy_per_class: 10
+    distance: neg_stable_cosine_distance
+
+distill_feat:
+    scheduled_factor: 1.0
+    only_old: True
+    dist_unlabeled: True
+
+generator_config:
+    use_same_classes: False
+    latent_dim: 64
+    output_dim: 64
+    input_dim: 64
+    cos_margin: 0.8
+    train_config:
+        lr: 0.1
+        lr_decay: 0.1
+        epoch: 1
+        scheduling:
+            type: step
+            epochs: [ 20,30,35 ]
+        loss_type: IE
+        threshold: 5
+        labeled_batch_size: 200
+        train_generator_memory_n_samples: 4
+        train_generator_unlabel_n_samples: 5
+        train_generator_new_n_samples: 20
+        train_generator_label_batchsize: 20
+        # generator loss
+        use_unlabeled_feature_map: True
+        use_ce: True
+        use_style: True
+        style_mean: False
+        style_weight: 2
+        use_contrastive: True
+        use_channels: True
+        cycle_weight_global: 0.3
+
+use_unlabeled_ce: True
+lr_layers:
+    layers_lr:
+        convnet.conv_1_3x3: 0.01
+        convnet.bn_1: 0.01
+        convnet.stage_1: 0.01
+        convnet.stage_2: 0.01
+        convnet.stage_3: 0.01
+#nca:
+#  margin: 0.6
+#  scale: 1.
+#  exclude_pos_denominator: true
+softmax_ce: True
+#softmax_ce_only_new: True
+pseudo_memory_n_samples: 2
+pseudo_memory_valid_map_idx: 0.25
+pseudo_re_mined: True
+
+groupwise_factors:
+    old_weights: 0.
+
+#finetuning_config:
+#    sampling: undersampling
+#    tuning: classifier
+#    lr: 0.05
+#    epochs: 20
+#    scaling: null
+
+# Cosine Scheduling (CS)
+scheduling: cosine
+
+# Misc
+epochs: 160
+lr: 0.1
+lr_decay: 0.1
+optimizer: sgd
+proxy_per_class: 1
+weight_decay: 0.0005
+
+weight_generation:
+    type: imprinted
+    multi_class_diff: kmeans
+
+dataset_transforms:
+    color_jitter: true
+
+use_unlabeled: True
+
+
+pretrain:
+    batch_size: 128
+    epochs: 160
+    lr: 0.1
+    lr_decay: 0.1
+    scheduling: cosine
+    optimizer: sgd
+    weight_decay: 0.0005

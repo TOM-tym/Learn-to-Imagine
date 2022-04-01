@@ -1,0 +1,8 @@
+__pycache__
+results/
+CIFAR100/options/dev/
+hyperexps/*
+*/.ipynb_checkpoints/*
+notebooks/
+**/*.pyc
+.idea/
