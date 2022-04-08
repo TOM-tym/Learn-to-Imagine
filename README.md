@@ -1,6 +1,7 @@
 # Learn-to-Imagine
 Official PyTorch implementation of CVPR2022 paper “Learning to Imagine: Diversify Memory for Incremental Learning using Unlabeled Data”
-[paper](Learning_to_imagine.pdf)[Project Page](https://isee-ai.cn/~yuming/Learn_to_imagine.html)
+[[paper]](Learning_to_imagine.pdf) 
+[[Project Page]](https://isee-ai.cn/~yuming/Learn_to_imagine.html)
 
 ## Environments
 
