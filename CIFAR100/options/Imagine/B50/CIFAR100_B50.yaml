@@ -25,7 +25,7 @@ generator_config:
     train_config:
         lr: 0.1
         lr_decay: 0.1
-        epoch: 1
+        epoch: 40
         scheduling:
             type: step
             epochs: [ 20,30,35 ]
