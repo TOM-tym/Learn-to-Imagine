@@ -22,7 +22,7 @@ and put it on the `data_path/imagenet_32`.
 cd CIFAR100;
 python -minclearn \
     --options options/Imagine/B50/CIFAR100_B50.yaml options/data/cifar100_3orders.yaml \
-    --initial-increment 10 --increment 10 --device YOUR_DEVICES_INDEX --label cifar_b50_step10 -w 0 --save task
+    --initial-increment 50 --increment 5 --device YOUR_DEVICES_INDEX --label cifar_b50_step10 -w 0 --save task
 ```
 
 ### Training for ImageNet-Subset
